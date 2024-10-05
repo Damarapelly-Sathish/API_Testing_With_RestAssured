@@ -13,9 +13,7 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 class RestAssuredApplicationTests {
 	public static void main(String[] args) {
-		Response response=RestAssured.get("https://jsonplaceholder.typicode.com/users");
-		System.out.println(response.getBody().asString());
-		postMethod();
+		nowPut();
 		}
 	public static void getMethod() {
 		baseURI="https://reqres.in/api";
@@ -28,5 +26,26 @@ class RestAssuredApplicationTests {
 		data.put("last_name", "reddy");
 		baseURI="https://reqres.in/api/users";
 		given().body(json1.toJSONString()).when().post("/users").then().statusCode(201).log().all();
+		
 	}
+	public static void postMethod1() {
+		Map<String,String> h=new HashMap<String,String>();
+		h.put("name", "sathish");
+		h.put("email","sathishreddy2609@");
+		JSONObject json=new JSONObject(h);
+		given().body(json.toJSONString()).when().post("https://reqres.in/api/users").then().statusCode(201).log().all();
+		given().get("https://reqres.in/api/users/2").then().log().all();
+	}
+	public static void nowGet() {
+		given().when().get("https://reqres.in/api/users/2").then().statusCode(200).log().all();
+	}
+	public static void nowPut() {
+		HashMap<String,String> h=new HashMap<String,String>();
+		h.put("first_name","sathish");
+		h.put("last_name","reddy");
+		JSONObject json=new JSONObject(h);
+		given().contentType("application/json").body(json.toJSONString()).when().put("https://reqres.in/api/users/2").then().statusCode(200);
+		given().contentType("application/json").when().get("https://reqres.in/api/users/2").then().statusCode(200).log().all();
+	}
+	
 }
